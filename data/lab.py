@@ -1,5 +1,5 @@
 #laberinto como matriz de caracteres
-laberinto = [
+maze = [
     ['X', 'o', 'X', 'X', 'X', 'X', 'X'], 
     ['X', ' ', 'X', ' ', ' ', ' ', 'X'],
     ['X', ' ', 'X', ' ', 'X', ' ', 'X'], 
