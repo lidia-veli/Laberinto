@@ -1,1 +1,1 @@
-all=['imprimir_laberinto']
+all=['estructura_lab', 'movimientos']
