@@ -32,54 +32,60 @@ def entrada_lab(lab):
     return lab
 
 
-def moverse_una_casilla(lab, path):
-    '''Función que mueve al jugador una casilla donde haya un hueco
+def moverse_a_casilla_no_pisada(lab, path, mov):
+    '''Función que mueve al jugador una casilla donde haya un hueco y por donde no haya pasado antes
+    
     -INPUT----------------
     lab: list
         laberinto con el jugador
     path: list
-        lista de movimientos que ha hecho el jugador
-    -OUTPUT---------------
-    (lab, path): tup
-        lab: list
-            laberinto con el jugador movido
-        path: list
-            lista actualizada de movimientos que ha hecho el jugador'''
+        lista con las coordenadas de las casillas por las que ya ha pasado el jugador
+    mov: list
+        lista con los movimientos que va haciendo el jugador
     
+    -OUTPUT----------------
+    lab: list
+        laberinto con el jugador movido
+    path: list
+        lista actualizada con las coordenadas de las casillas por las que ya ha pasado el jugador
+    mov: list
+        lista actualizada con los movimientos que va haciendo el jugador
+    '''
     for f in range(FILAS): # recorremos las filas
-        for c in range(COLUMNAS): # y las columnas
-            
-            if lab[f][c]=='o': #si el jugador está en esa (f,c)
+            for c in range(COLUMNAS): # y las columnas
                 
-                # si hay un hueco debajo (fila+1, misma columna)
-                if lab[f+1][c]==' ': 
-                    lab[f+1][c]='o' # nos movemos al hueco
-                    lab[f][c]=' ' # y la casilla en la que estabamos la dejamos vacía
-                    path.append('abajo') #guardamos nuestro movimiento
-                    return lab , path
+                if lab[f][c]=='o': #si el jugador está en esa (f,c)
+                    path.append( (f,c) ) #guardamos las coordenadas de la casilla en la que estamos (pisada)
+                    
+                    # si hay un hueco a la derecha (misma fila, columna+1) y es una casilla no pisada anteriormente
+                    if lab[f][c+1]==' ' and (f,c+1) not in path: 
+                        lab[f][c+1]='o' # nos movemos al hueco
+                        lab[f][c]=' ' #y la casilla en la que estabamos la dejamos vacía
+                        mov.append('derecha') #guardamos nuestro movimiento
+                        return lab , path, mov
+                    
+                    # si hay un hueco a la izquierda (misma fila, columna-1) y es una casilla no pisada anteriormente
+                    if lab[f][c-1]==' ' and (f,c-1) not in path: 
+                        lab[f][c-1]='o' # nos movemos al hueco
+                        lab[f][c]=' ' #y la casilla en la que estabamos la dejamos vacía
+                        mov.append('izquierda') #guardamos nuestro movimiento
+                        return lab , path, mov
+                    
+                    # si hay un hueco debajo (fila+1, misma columna) y es una casilla no pisada anteriormente
+                    elif lab[f+1][c]==' ' and (f+1,c) not in path:
+                        lab[f+1][c]='o' # nos movemos al hueco
+                        lab[f][c]=' ' # y la casilla en la que estabamos la dejamos vacía
+                        mov.append('abajo') #guardamos nuestro movimiento
+                        return lab , path, mov
                 
-                #si hay un hueco encima (fila-1, misma columna)
-                elif lab[f-1][c]==' ':
-                    lab[f-1][c]='o' # nos movemos al hueco
-                    lab[f][c]=' ' #y la casilla en la que estabamos la dejamos vacía
-                    path.append('arriba') #guardamos nuestro movimiento
-                    return lab , path
+                    #si hay un hueco encima (fila-1, misma columna) y es una casilla no pisada anteriormente
+                    elif lab[f-1][c]==' ' and (f-1,c) not in path:
+                        lab[f-1][c]='o' # nos movemos al hueco
+                        lab[f][c]=' ' #y la casilla en la que estabamos la dejamos vacía
+                        mov.append('arriba') #guardamos nuestro movimiento
+                        return lab , path, mov
                 
-                # si hay un hueco a la derecha (misma fila, columna+1)
-                if lab[f][c+1]==' ': 
-                    lab[f][c+1]='o' # nos movemos al hueco
-                    lab[f][c]=' ' #y la casilla en la que estabamos la dejamos vacía
-                    path.append('derecha') #guardamos nuestro movimiento
-                    return lab , path
-                
-                #si hay un hueco a la izquierda (misma fila, columna-1)
-                elif lab[f][c-1]==' ':
-                    lab[f][c-1]='o' # nos movemos al hueco
-                    lab[f][c]=' ' #y la casilla en la que estabamos la dejamos vacía
-                    path.append('izquierda') #guardamos nuestro movimiento
-                    return lab , path
-            
-            else: #si el jugador no está en esa (f,c), seguimos recorriendo las posiciones
-                pass
+                else: #si no está el jugador en esa casilla, segimos recorriendo coordenadas
+                    pass
 
 
